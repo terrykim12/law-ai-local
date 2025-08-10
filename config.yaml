@@ -1,0 +1,25 @@
+embedding:
+  model: all-MiniLM-L6-v2
+
+llm:
+  provider: ollama
+  model: llama3
+  endpoint: http://localhost:11434
+
+retriever:
+  top_k: 5
+  chunk_size: 800
+  chunk_overlap: 120
+  reranker: none  # options: none, cross-encoder
+
+vectorstore:
+  provider: chroma
+  path: vectorstore
+
+server:
+  host: 0.0.0.0
+  port: 8000
+
+prompts:
+  system: prompts/system.txt
+
