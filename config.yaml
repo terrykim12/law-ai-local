@@ -4,12 +4,13 @@ embedder:
 
 llm:
   provider: ollama
-  model: qwen2.5:7b-instruct
+  model: qwen3:8b
   endpoint: http://localhost:11434
   max_tokens: 768
   temperature: 0.2
 
 retriever:
+  collection_name: law_kb_m3
   top_k: 6
   chunk_size: 800
   chunk_overlap: 120
@@ -26,4 +27,7 @@ server:
 
 prompts:
   system: prompts/system.txt
+
+retriever:
+  collection_name: cases_kb_m3
 
