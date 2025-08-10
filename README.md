@@ -67,6 +67,17 @@ curl -X POST "http://localhost:8000/query" ^
 python -m eval.evaluate
 ```
 
+### 속도 비교(벤치마크)
+```bash
+# 서버 경유(검색+LLM 포함)
+python -m eval.benchmark --mode e2e --models qwen2.5:7b-instruct qwen3:8b --runs 3 \
+  --question "간단한 테스트 질문입니다. 답변을 1-2문장으로 해주세요."
+
+# LLM 단독 호출만 비교
+python -m eval.benchmark --mode llm --models qwen2.5:7b-instruct qwen3:8b --runs 3 \
+  --question "간단한 테스트 질문입니다. 답변을 1-2문장으로 해주세요."
+```
+
 ### 학습(예시)
 `training/sft.jsonl` 형식으로 데이터를 준비합니다. QLoRA 파이프라인은 환경/리소스 의존성이 커서 본 저장소에는 경량 예시만 포함했습니다. 필요 시 `training/qlora_train.py`를 참고해 맞춤 구현을 확장하세요.
 
