@@ -24,11 +24,13 @@ class LLMClient:
         self,
         prompt: str,
         system: Optional[str] = None,
-        temperature: float = 0.2,
-        max_tokens: int = 768,
+        temperature: Optional[float] = None,
+        max_tokens: Optional[int] = None,
     ) -> str:
+        temp = float(self.config.get("llm", {}).get("temperature", 0.2)) if temperature is None else float(temperature)
+        max_tok = int(self.config.get("llm", {}).get("max_tokens", 768)) if max_tokens is None else int(max_tokens)
         if self.provider.lower() == "ollama":
-            return self._generate_with_ollama(prompt, system, temperature, max_tokens)
+            return self._generate_with_ollama(prompt, system, temp, max_tok)
         raise ValueError(f"LLM provider '{self.provider}'는 지원되지 않습니다.")
 
     def _generate_with_ollama(

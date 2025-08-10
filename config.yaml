@@ -1,16 +1,20 @@
-embedding:
-  model: all-MiniLM-L6-v2
+embedder:
+  model: BAAI/bge-m3
+  device: cpu
 
 llm:
   provider: ollama
-  model: llama3
+  model: qwen2.5:7b-instruct
   endpoint: http://localhost:11434
+  max_tokens: 768
+  temperature: 0.2
 
 retriever:
-  top_k: 5
+  top_k: 6
   chunk_size: 800
   chunk_overlap: 120
-  reranker: none  # options: none, cross-encoder
+  use_reranker: true
+  reranker_model: BAAI/bge-reranker-large
 
 vectorstore:
   provider: chroma
