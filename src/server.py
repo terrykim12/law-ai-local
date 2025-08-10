@@ -41,7 +41,9 @@ def query(req: QueryRequest) -> QueryResponse:
     context = "\n\n".join(context_parts)
 
     prompt = build_prompt(context=context, question=req.question)
-    raw_answer = LLM.generate(prompt=prompt, system=SYSTEM_PROMPT)
+    # 요청에서 모델 오버라이드가 있으면 적용 (예: 'qwen3:8b')
+    model_override = req.model
+    raw_answer = LLM.generate(prompt=prompt, system=SYSTEM_PROMPT, model_override=model_override)
     moderated_answer = moderate_text(raw_answer)
     final_answer = add_disclaimer(moderated_answer)
     return QueryResponse(answer=final_answer, sources=sources)

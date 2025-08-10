@@ -48,6 +48,19 @@ curl -X POST "http://localhost:8000/query" ^
   -d "{\"question\":\"계약 해제의 요건은?\",\"top_k\":5}"
 ```
 
+### 모델 A/B 테스트(속도 비교)
+- 기본 모델은 `config.yaml`의 `llm.model` 값을 따릅니다.
+- 요청 단위로 모델을 바꾸고 싶다면 `model` 필드를 지정하세요.
+```bash
+curl -X POST "http://localhost:8000/query" ^
+  -H "Content-Type: application/json" ^
+  -d "{\"question\":\"샘플 질문\",\"model\":\"qwen2.5:7b-instruct\"}"
+
+curl -X POST "http://localhost:8000/query" ^
+  -H "Content-Type: application/json" ^
+  -d "{\"question\":\"샘플 질문\",\"model\":\"qwen3:8b\"}"
+```
+
 ### 평가
 `eval/examples.csv`를 수정한 뒤:
 ```bash

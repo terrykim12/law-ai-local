@@ -26,11 +26,13 @@ class LLMClient:
         system: Optional[str] = None,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        model_override: Optional[str] = None,
     ) -> str:
         temp = float(self.config.get("llm", {}).get("temperature", 0.2)) if temperature is None else float(temperature)
         max_tok = int(self.config.get("llm", {}).get("max_tokens", 768)) if max_tokens is None else int(max_tokens)
+        model_name = (model_override or self.model)
         if self.provider.lower() == "ollama":
-            return self._generate_with_ollama(prompt, system, temp, max_tok)
+            return self._generate_with_ollama(prompt, system, temp, max_tok, model_name)
         raise ValueError(f"LLM provider '{self.provider}'는 지원되지 않습니다.")
 
     def _generate_with_ollama(
@@ -39,10 +41,11 @@ class LLMClient:
         system: Optional[str],
         temperature: float,
         max_tokens: int,
+        model_name: str,
     ) -> str:
         url = self._join_url(self.endpoint, "/api/generate")
         payload = {
-            "model": self.model,
+            "model": model_name,
             "prompt": prompt,
             # Ollama는 system 프롬프트를 messages 기반 대화가 아닌 generate API에서도 전달 가능
             "system": system or "",
